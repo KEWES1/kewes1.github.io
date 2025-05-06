@@ -43,12 +43,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JDE Julian Date Converter</title>
-  <meta name="description" content="Free online tool to convert JDE Julian dates to calendar dates and vice versa. Perfect for JD Edwards users in ERP, logistics, and manufacturing.">
-  <meta name="keywords" content="JDE Julian date converter, JD Edwards date tool, Julian to Gregorian, calendar to JDE, ERP date conversion">
+  <meta name="description" content="Free online JDE Julian Date Converter for JD Edwards users. Convert JDE Julian dates (CYYDDD) to calendar dates (MM/DD/YYYY) and vice versa, plus Excel formulas for ERP, logistics, and manufacturing.">
+  <meta name="keywords" content="JDE Julian date converter, JD Edwards date tool, Julian to Gregorian, calendar to JDE, ERP date conversion, JD Edwards ERP, Excel formulas">
   <meta name="author" content="kewes1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google AdSense Script (Replace YOUR-ADSENSE-PUB-ID with your publisher ID) -->
+  <!-- Google AdSense Script (Replace YOUR-ADSENSE-PUB-ID with your publisher ID, e.g., pub-1234567890123456) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6257630576324929"
           crossorigin="anonymous"></script>
 </head>
@@ -70,7 +70,7 @@
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-2xl font-bold text-center mb-4">JDE Julian Date Converter</h1>
       <p class="text-gray-600 text-center mb-6">
-        Easily convert JDE Julian dates (CYYDDD) to calendar dates (MM/DD/YYYY) and vice versa. Ideal for JD Edwards users in ERP systems, logistics, and manufacturing.
+        Effortlessly convert JDE Julian dates (CYYDDD) to calendar dates (MM/DD/YYYY) and back. Designed for JD Edwards EnterpriseOne users in ERP systems, logistics, manufacturing, and supply chain management, this tool simplifies date conversions to streamline your workflows.
       </p>
       
       <!-- Ad Unit 1: Above the form -->
@@ -101,7 +101,7 @@
       </div>
       
       <!-- Ad Unit 2: Below the form -->
-      <div class="mt-4 text-center">
+      <div class="mt-4 text-center mb-6">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-YOUR-ADSENSE-PUB-ID"
@@ -111,6 +111,18 @@
         <script>
           (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
+      </div>
+      
+      <!-- Excel Formulas Section -->
+      <div class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Excel Formulas for JDE Julian Date Conversion</h2>
+        <p class="text-gray-700 mb-2">Use these formulas in Excel to convert JDE Julian dates to calendar dates and vice versa.</p>
+        <h3 class="text-md font-medium mb-1">JDE Julian to Calendar Date (MM/DD/YYYY):</h3>
+        <pre class="bg-gray-100 p-2 rounded-md text-sm mb-2">=DATE(1900+INT(A1/1000),1,1)+MOD(A1,1000)-1</pre>
+        <p class="text-gray-600 text-sm mb-2">Where A1 is the cell with the JDE Julian date (e.g., 123456). Format the cell as MM/DD/YYYY.</p>
+        <h3 class="text-md font-medium mb-1">Calendar Date to JDE Julian (CYYDDD):</h3>
+        <pre class="bg-gray-100 p-2 rounded-md text-sm mb-2">=(YEAR(A1)-2000+100)*1000+(A1-DATE(YEAR(A1),1,1))+1</pre>
+        <p class="text-gray-600 text-sm mb-2">Where A1 is the cell with the calendar date (e.g., 12/31/2023).</p>
       </div>
       
       <!-- Result Area -->
@@ -180,7 +192,7 @@
       // Validate date
       const date = new Date(year, month - 1, day);
       if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
-        resultDiv.innerHTML = `<span class="text-red-500">Invalid date. Please enter a valid calendar date.</span>`;
+        resultDiv.innerHTML = '<span class="text-red-500">Invalid date. Please enter a valid calendar date.</span>';
         return;
       }
 
