@@ -1,206 +1,80 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JDE Julian Date Converter</title>
-  <meta name="description" content="Free online JDE Julian Date Converter for JD Edwards users. Convert JDE Julian dates (CYYDDD) to calendar dates (MM/DD/YYYY) and vice versa, plus Excel formulas for ERP, logistics, and manufacturing.">
-  <meta name="keywords" content="JDE Julian date converter, JD Edwards date tool, Julian to Gregorian, calendar to JDE, ERP date conversion, JD Edwards ERP, Excel formulas">
-  <meta name="author" content="kewes1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google AdSense Script (Replace YOUR-ADSENSE-PUB-ID with your publisher ID, e.g., pub-1234567890123456) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6257630576324929"
-          crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover the top 5 JD Edwards hints for 2025 to optimize your ERP system, including automation, AI, security, and more.">
+    <meta name="keywords" content="JD Edwards hints 2025, JDE automation tips, JDE Release 25, JDE security best practices, JDE UX One tutorial">
+    <meta name="author" content="Steven">
+    <title>Top 5 JDE Hints for 2025 - Steven's Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  <!-- Navigation -->
-  <nav class="bg-blue-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-xl font-bold">JDE Date Converter</a>
-      <div>
-        <a href="index.html" class="mr-4 hover:underline">Home</a>
-        <a href="about.html" class="mr-4 hover:underline">About</a>
-        <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-      </div>
-    </div>
-  </nav>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="jde-hints.html">JDE Hints</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Top 5 JD Edwards Hints for 2025</h1>
+        <p>Welcome to my guide on the top 5 JD Edwards (JDE) hints for 2025! As a programming enthusiast, I’ve compiled these practical tips to help JDE users optimize their EnterpriseOne systems, leveraging the latest features in Release 25, automation tools, and more. Whether you’re a business analyst or IT professional, these hints will boost your JDE efficiency.</p>
 
-  <!-- Main Content -->
-  <div class="flex-grow flex items-center justify-center py-8">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h1 class="text-2xl font-bold text-center mb-4">JDE Julian Date Converter</h1>
-      <p class="text-gray-600 text-center mb-6">
-        Effortlessly convert JDE Julian dates (CYYDDD) to calendar dates (MM/DD/YYYY) and back. Designed for JD Edwards EnterpriseOne users in ERP systems, logistics, manufacturing, and supply chain management, this tool simplifies date conversions to streamline your workflows.
-      </p>
-      
-      <!-- Ad Unit 1: Above the form -->
-      <div class="mb-4 text-center">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-YOUR-6257630576324929"
-             data-ad-slot="YOUR-AD-SLOT-ID"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-      
-      <!-- JDE to Calendar Date -->
-      <div class="mb-6">
-        <label for="jdeDate" class="block text-sm font-medium text-gray-700">JDE Julian Date (CYYDDD):</label>
-        <input type="text" id="jdeDate" class="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., 123456">
-        <button onclick="convertJDEDate()" class="mt-2 w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Convert to Calendar Date</button>
-      </div>
-      
-      <!-- Calendar Date to JDE -->
-      <div class="mb-6">
-        <label for="calendarDate" class="block text-sm font-medium text-gray-700">Calendar Date (MM/DD/YYYY):</label>
-        <input type="text" id="calendarDate" class="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., 12/31/2023">
-        <button onclick="convertCalendarDate()" class="mt-2 w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600">Convert to JDE Julian Date</button>
-      </div>
-      
-     
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6257630576324929"
-     crossorigin="anonymous"></script>
-     
-      
-      <!-- Excel Formulas Section -->
-      <div class="mb-6">
-        <h2 class="text-lg font-semibold mb-2">Excel Formulas for JDE Julian Date Conversion</h2>
-        <p class="text-gray-700 mb-2">Use these formulas in Excel to convert JDE Julian dates to calendar dates and vice versa.</p>
-        <h3 class="text-md font-medium mb-1">JDE Julian to Calendar Date (MM/DD/YYYY):</h3>
-        <pre class="bg-gray-100 p-2 rounded-md text-sm mb-2">=DATE(1900+INT(A1/1000),1,1)+MOD(A1,1000)-1</pre>
-        <p class="text-gray-600 text-sm mb-2">Where A1 is the cell with the JDE Julian date (e.g., 123456). Format the cell as MM/DD/YYYY.</p>
-        <h3 class="text-md font-medium mb-1">Calendar Date to JDE Julian (CYYDDD):</h3>
-        <pre class="bg-gray-100 p-2 rounded-md text-sm mb-2">=(YEAR(A1)-2000+100)*1000+(A1-DATE(YEAR(A1),1,1))+1</pre>
-        <p class="text-gray-600 text-sm mb-2">Where A1 is the cell with the calendar date (e.g., 12/31/2023).</p>
-      </div>
-      
-      <!-- Result Area -->
-      <div id="result" class="mt-4 text-center text-lg font-medium"></div>
-    </div>
-  </div>
+        <section>
+            <h2>1. Master JD Edwards Orchestrator for Automation</h2>
+            <p>JD Edwards Orchestrator is a game-changer for automating repetitive tasks in 2025. With its no-code/low-code interface, you can create workflows to streamline processes like inventory updates or supplier data integration. For example, set up an orchestration to automatically sync sales data with external systems via REST APIs, saving hours of manual work.</p>
+            <p><strong>How to Start:</strong> Use Orchestrator Studio to design a workflow. Test it with a simple task, like auto-generating purchase orders. Check Oracle’s <a href="https://docs.oracle.com/en/applications/jd-edwards/" target="_blank">official documentation</a> for setup guides.</p>
+            <p><strong>Why It Matters:</strong> Automation is a top priority for 59% of JDE users, making this a must-have skill for 2025.</p>
+        </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white text-center py-4">
-    <p>© 2025 JDE Julian Date Converter. All rights reserved.</p>
-    <p>
-      <a href="privacy.html" class="underline hover:text-blue-300">Privacy Policy</a> |
-      <a href="about.html" class="underline hover:text-blue-300">About</a>
-    </p>
-  </footer>
+        <section>
+            <h2>2. Leverage Release 25’s AI-Driven Demand Planning</h2>
+            <p>JDE Release 25 integrates with AI tools like Streamline to enhance demand forecasting. These tools achieve up to 99% forecast accuracy, reducing stockouts by 98% and excess inventory by 50%. For example, a retailer can predict seasonal demand for products with precision.</p>
+            <p><strong>How to Start:</strong> Connect Streamline to JDE’s inventory module and input historical sales data. Run forecasts and adjust based on results. Visit <a href="https://gmdhsoftware.com/" target="_blank">Streamline’s site</a> for a demo.</p>
+            <p><strong>Why It Matters:</strong> AI-driven planning is critical for businesses optimizing supply chains in 2025.</p>
+        </section>
 
-  <script>
-    function convertJDEDate() {
-      const input = document.getElementById('jdeDate').value.trim();
-      const resultDiv = document.getElementById('result');
+        <section>
+            <h2>3. Secure Your JDE System with Best Practices</h2>
+            <p>Protect your JDE system by closing the default open security model. Implement role-based access control and regular audits to prevent breaches. For example, disable the default JDE account and use two-factor authentication to secure sensitive data.</p>
+            <p><strong>How to Start:</strong> Conduct a security assessment using ERP Suites’ checklist (<a href="https://blog.erpsuites.com/" target="_blank">ERP Suites</a>). Schedule monthly audits to monitor user activity.</p>
+            <p><strong>Why It Matters:</strong> Cybersecurity is a growing concern, and secure systems build trust with users and Google.</p>
+        </section>
 
-      // Validate input
-      if (!/^\d{6}$/.test(input)) {
-        resultDiv.innerHTML = '<span class="text-red-500">Please enter a valid 6-digit JDE Julian Date (CYYDDD).</span>';
-        return;
-      }
+        <section>
+            <h2>4. Optimize Reporting with UX One in Release 25</h2>
+            <p>UX One in JDE Release 25 lets you create real-time dashboards without coding. Build a sales performance dashboard using User Defined Objects (UDOs) to track KPIs like revenue or order volume.</p>
+            <p><strong>How to Start:</strong> Use UX One’s interface to drag-and-drop data fields into a dashboard. Customize it for your team’s needs. Oracle’s <a href="https://questoraclecommunity.org/" target="_blank">Quest Community</a> offers tutorials.</p>
+            <p><strong>Why It Matters:</strong> Real-time reporting improves decision-making, a priority for 45% of JDE users.</p>
+        </section>
 
-      // Parse JDE Julian Date
-      const centuryDigit = parseInt(input[0]);
-      const yearDigits = parseInt(input.substring(1, 3));
-      const dayOfYear = parseInt(input.substring(3, 6));
+        <section>
+            <h2>5. Stay Code-Current with JDE Release 24/25 Upgrades</h2>
+            <p>Upgrading to JDE Release 24 or 25 unlocks 64-bit processing and new features like enhanced orchestrations. Use Oracle’s Update Manager to streamline upgrades with minimal downtime.</p>
+            <p><strong>How to Start:</strong> Plan your upgrade with Oracle’s roadmap (<a href="https://www.oracle.com/erp/jd-edwards/" target="_blank">Oracle JDE</a>). Test in a sandbox environment first.</p>
+            <p><strong>Why It Matters:</strong> Over 30% of JDE users are upgrading in 2024–2025, ensuring access to the latest innovations.</p>
+        </section>
 
-      // Calculate full year
-      const year = (centuryDigit * 100) + 1900 + yearDigits;
+        <section>
+            <h2>Bonus: JDE Julian Date Conversion Formulas</h2>
+            <p>As a bonus, here are the Excel formulas for converting JDE Julian dates, as shared on my <a href="index.html">home page</a>:</p>
+            <pre><code>
+JDE Julian Date to Calendar Date:
+=DATE(IF(0+(LEFT(A1,1))<3,2000,1900)+LEFT(A1,3),1,RIGHT(A1,3))
 
-      // Validate day of year
-      const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-      const maxDays = isLeapYear ? 366 : 365;
-      if (dayOfYear < 1 || dayOfYear > maxDays) {
-        resultDiv.innerHTML = `<span class="text-red-500">Invalid day of year. Must be between 1 and ${maxDays} for ${year}.</span>`;
-        return;
-      }
-
-      // Convert day of year to calendar date
-      const date = new Date(year, 0, dayOfYear);
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      const fullYear = date.getFullYear();
-
-      // Display result
-      resultDiv.innerHTML = `<span class="text-blue-600">Calendar Date: ${month}/${day}/${fullYear}</span>`;
-    }
-
-    function convertCalendarDate() {
-      const input = document.getElementById('calendarDate').value.trim();
-      const resultDiv = document.getElementById('result');
-
-      // Validate input format (MM/DD/YYYY)
-      if (!/^\d{2}\/\d{2}\/\d{4}$/.test(input)) {
-        resultDiv.innerHTML = '<span class="text-red-500">Please enter a valid date in MM/DD/YYYY format (e.g., 12/31/2023).</span>';
-        return;
-      }
-
-      // Parse calendar date
-      const [month, day, year] = input.split('/').map(Number);
-      
-      // Validate date
-      const date = new Date(year, month - 1, day);
-      if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
-        resultDiv.innerHTML = '<span class="text-red-500">Invalid date. Please enter a valid calendar date.</span>';
-        return;
-      }
-
-      // Calculate day of year
-      const startOfYear = new Date(year, 0, 1);
-      const diffInMs = date - startOfYear;
-      const dayOfYear = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
-
-      // Calculate JDE Julian Date
-      const century = Math.floor(year / 100) - 19; // e.g., 20 for 2023 (2000s)
-      const twoDigitYear = year % 100; // e.g., 23 for 2023
-      const jdeJulianDate = `${century}${twoDigitYear.toString().padStart(2, '0')}${dayOfYear.toString().padStart(3, '0')}`;
-
-      // Display result
-      resultDiv.innerHTML = `<span class="text-green-600">JDE Julian Date: ${jdeJulianDate}</span>`;
-    }
-  </script>
+Calendar Date to JDE Julian Date:
+=IF(YEAR(A1)<2000,YEAR(A1)-1900&RIGHT("000"&(A1-DATE(YEAR(A1),1,0)),3),YEAR(A1)-2000&RIGHT("000"&(A1-DATE(YEAR(A1),1,0)),3))
+            </code></pre>
+            <p>These formulas help JDE users convert dates for reporting and data analysis, enhancing system usability.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Steven. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="contact.html">Contact</a></p>
+    </footer>
 </body>
 </html>
