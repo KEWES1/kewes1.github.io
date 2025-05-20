@@ -1,96 +1,33 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - JDE Julian Date Converter</title>
-  <meta name="description" content="Learn about the JDE Julian Date Converter, created by a JD Edwards expert with 25 years of experience, based in New Zealand.">
-  <meta name="keywords" content="JDE Julian date converter, JD Edwards expert, ERP date tool, New Zealand JDE, Julian to Gregorian">
-  <meta name="author" content="kewes1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Steven: Learn about my passion for programming, gaming, and music, and my expertise in JD Edwards.">
+    <meta name="keywords" content="Steven about, JD Edwards expertise, programming portfolio">
+    <meta name="author" content="Steven">
+    <title>About Steven</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  <!-- Navigation -->
-  <nav class="bg-blue-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-xl font-bold">JDE Date Converter</a>
-      <div>
-        <a href="index.html" class="mr-4 hover:underline">Home</a>
-        <a href="about.html" class="mr-4 underline">About</a>
-        <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="flex-grow flex items-center justify-center py-8">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h1 class="text-2xl font-bold text-center mb-4">About JDE Julian Date Converter</h1>
-      <p class="text-gray-700 mb-4">
-        Welcome to the JDE Julian Date Converter, a free online tool created to simplify date conversions for JD Edwards EnterpriseOne users.I’m a JD Edwards expert with 25 years of experience, now living in the beautiful country of New Zealand. My passion is sharing my deep JDE knowledge to help professionals in ERP, logistics, manufacturing, and supply chain management work more efficiently.
-      </p>
-      <p class="text-gray-700 mb-4">
-        With decades of hands-on experience in JD Edwards systems, I understand the challenges of working with JDE’s unique Julian date format (CYYDDD). This tool was born out of a desire to make date conversions seamless, allowing you to convert JDE Julian dates to standard calendar dates (MM/DD/YYYY) and vice versa with ease. Whether you’re an administrator, analyst, or consultant, this converter is designed to save you time and reduce errors in your workflows.
-      </p>
-      <p class="text-gray-700 mb-4">
-        Based in New Zealand, I’m committed to supporting the global JDE community by providing accessible, reliable tools. The JDE Julian Date Converter is just the start—I aim to share more resources and insights to empower JDE users worldwide. Your feedback is invaluable in shaping future tools and content.
-      </p>
-      <p class="text-gray-700 mb-4">
-        Thank you for using the JDE Julian Date Converter! If you have suggestions, questions, or want to connect, please reach out via <a href="https://github.com/kewes1" class="underline hover:text-blue-500">GitHub</a>. Let’s continue to make JDE work smarter for everyone.
-      </p>
-      <div class="mt-4 text-center">
-        <a href="index.html" class="text-blue-500 underline hover:text-blue-600">Back to Converter</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white text-center py-4">
-    <p>© 2025 JDE Julian Date Converter. All rights reserved.</p>
-    <p>
-      <a href="privacy.html" class="underline hover:text-blue-300">Privacy Policy</a> |
-      <a href="about.html" class="underline hover:text-blue-300">About</a>
-    </p>
-  </footer>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="jde-hints.html">JDE Hints</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>About Me</h1>
+        <p>Hi, I’m Steven, a programming enthusiast with a passion for gaming and music. I specialize in JD Edwards EnterpriseOne, sharing tips like Julian date conversions and automation workflows. My journey started with coding small projects, and now I explore tools like JDE Orchestrator and UX One to help businesses optimize their ERP systems.</p>
+        <p>In my free time, I dive into indie games, analyze open-world game trends, and experiment with music production using free DAWs. This site is my space to share knowledge and connect with others who share my interests.</p>
+    </main>
+    <footer>
+        <p>© 2025 Steven. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="contact.html">Contact</a></p>
+    </footer>
 </body>
 </html>
